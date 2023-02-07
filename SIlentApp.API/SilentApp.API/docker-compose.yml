@@ -1,0 +1,32 @@
+version: "3.7"
+
+networks:
+    silentapp-network-dev:
+        driver: bridge
+
+services:
+    aspnetcoreapi:
+        build: 
+            context: .
+            dockerfile: prod.Dockerfile
+        ports:
+            - "8080:5000"
+        networks: 
+            - silentapp-network-dev
+        
+    db:
+        image: mcr.microsoft.com/mssql/server:2019-CU6-ubuntu-16.04 
+        container_name: db-server
+        env_file: 
+            - db.env
+        volumes:
+            - db-data:/var/opt/mssql
+        ports:
+            - "1433:1433"
+        networks: 
+            - silentapp-network-dev
+
+volumes:
+    db-data:
+
+   
